@@ -26,6 +26,7 @@ public class PrizeScripts : MonoBehaviour
     }
 
     void DelayDestroy(){
+        GameManager.instance.getPrize();
         Destroy(gameObject); //Destroy this objects
     }
 }

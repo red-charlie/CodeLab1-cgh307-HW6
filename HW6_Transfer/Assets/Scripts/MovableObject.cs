@@ -10,11 +10,16 @@ public class MovableObject : MonoBehaviour {
     Collider col; //holds the Collider
     string filePath; //holds path to this objects save file
 
+    Rigidbody ballObjectRb;
+
     void Start(){
-        filePath = Application.dataPath + "/" + name + ".json";
+        filePath = Application.dataPath + "/savefiles/" + name + ".json";
 
         rb = GetComponent<Rigidbody>(); //get the rigidbody component
         col = GetComponent<Collider>(); //get the collider component
+
+        GameObject ballObject = GameObject.Find("Ball");
+        ballObjectRb = ballObject.GetComponent<Rigidbody>();
 
         if (File.Exists(filePath)) //if the save file exists
         {
@@ -27,12 +32,16 @@ public class MovableObject : MonoBehaviour {
     }
 
     void OnMouseDrag(){ //if you drag the mouse over the gameObject
-        mouseZPos = Camera.main.WorldToScreenPoint(gameObject.transform.position).z; //get the Z position of the object at the screen
-       
-        rb.isKinematic = true; //make it uneffected by physics
-        rb.MovePosition(GetMouseAsWorldPoint()); //move it to the new mouse position
 
-        col.enabled = false; //turn off the collider
+        if (ballObjectRb.isKinematic == true)//checking to see if the ball is currently moving
+        {
+            mouseZPos = Camera.main.WorldToScreenPoint(gameObject.transform.position).z; //get the Z position of the object at the screen
+
+            rb.isKinematic = true; //make it uneffected by physics
+            rb.MovePosition(GetMouseAsWorldPoint()); //move it to the new mouse position
+
+            col.enabled = false; //turn off the collider
+        }
     }
 
     private void OnMouseUp() //if you release the mouse over the object
